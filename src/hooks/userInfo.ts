@@ -1,9 +1,11 @@
-import useLocalStorage from "./localStorage";
+import useLocalStorage from "@hooks/localStorage";
 import { Storage } from "@utils/storage";
 
+type TUserInfo = { name: string };
+
 export default function useUserInfo() {
-  const [userInfo, dispatch] = useLocalStorage<{ name: string }>(
+  const { value: userInfo, dispatch } = useLocalStorage<TUserInfo>(
     Storage.USER_INFO
   );
-  return [userInfo, dispatch];
+  return { userInfo, dispatch };
 }

@@ -5,17 +5,27 @@ import { Link } from "react-router-dom";
 import { useMemo } from "react";
 
 const HomePage: FC = () => {
-  const [userInfo] = useUserInfo();
+  const { userInfo, dispatch } = useUserInfo();
   const isLogin = useMemo(() => !userInfo, [userInfo]);
   return (
     <Layout className="h-screen overflow-hidden">
       <Header>
-        {isLogin && (
+        {isLogin ? (
           <Link
             to="/login"
             className="text-sm font-semibold leading-6 text-gray-900 z-50"
           >
             Log in <span aria-hidden="true">&rarr;</span>
+          </Link>
+        ) : (
+          <Link
+            to="/"
+            className="text-sm font-semibold leading-6 text-gray-900 z-50"
+            onClick={() => {
+              dispatch();
+            }}
+          >
+            Log out <span aria-hidden="true">&rarr;</span>
           </Link>
         )}
       </Header>

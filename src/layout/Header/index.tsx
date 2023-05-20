@@ -22,6 +22,7 @@ const Header: FC<TProps> = ({ children, className }) => {
               alt=""
             />
           </Link>
+          <strong className="ml-2 leading-8">天才口算平台</strong>
         </div>
         <div className="lg:flex lg:flex-1 lg:justify-end">{children}</div>
       </nav>
