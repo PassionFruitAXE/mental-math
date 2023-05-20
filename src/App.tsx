@@ -1,7 +1,8 @@
+import AppRouter from "./routes";
 import { FC } from "react";
 
 const App: FC = () => {
-  return <div className="text-xs">Hello World</div>;
+  return <AppRouter />;
 };
 
 export default App;
