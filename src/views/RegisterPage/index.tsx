@@ -1,23 +1,15 @@
-import Header from "@/layout/Header";
-import Main from "@/layout/Main";
 import { FC } from "react";
-import { Layout } from "@/layout";
-import { Link, useNavigate } from "react-router-dom";
+import { Layout, Main, ReturnHeader as Header } from "@/layout";
+import { useNavigate } from "react-router-dom";
 
 const RegisterPage: FC = () => {
   const navigator = useNavigate();
   return (
     <Layout>
-      <Header>
-        <Link
-          to="/login"
-          className="text-sm font-semibold leading-6 text-gray-900 z-50"
-        >
-          <span aria-hidden="true">&larr;</span> Return Login
-        </Link>
-      </Header>
-      <Main className="flex">
-        <div className="mx-auto p-12 rounded-3xl glass-xl">
+      <Header />
+      <Main className="flex justify-around items-center">
+        <img src="/math-1.png" alt="" className="h-64" />
+        <div className=" p-12 rounded-3xl glass-xl shadow-sm">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
               注册账号
@@ -98,7 +90,7 @@ const RegisterPage: FC = () => {
                     type="text"
                     name="password"
                     id="password"
-                    autoComplete="password"
+                    autoComplete="new-password"
                     className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -158,6 +150,7 @@ const RegisterPage: FC = () => {
             </div>
           </form>
         </div>
+        <img src="/math-2.png" alt="" className="h-64" />
       </Main>
     </Layout>
   );

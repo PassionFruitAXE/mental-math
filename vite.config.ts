@@ -9,12 +9,10 @@ import type { UserConfigFn, UserConfig } from "vite";
 
 const defineConfig: UserConfigFn = () => {
   const config: UserConfig = {
+    publicDir: path.join(__dirname, "./src/assets"),
     resolve: {
       alias: {
         "@": path.join(__dirname, "src"),
-        "@views": path.join(__dirname, "src/views"),
-        "@utils": path.join(__dirname, "src/utils"),
-        "@hooks": path.join(__dirname, "src/hooks"),
       },
     },
     server: {

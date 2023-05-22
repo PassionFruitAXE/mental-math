@@ -11,10 +11,7 @@
     "allowSyntheticDefaultImports": true,
     "jsx": "react-jsx",
     "paths": {
-      "@/*": ["./src/*"],
-      "@views/*": ["./src/views/*"],
-      "@utils/*": ["./src/utils/*"],
-      "@hooks/*": ["./src/hooks/*"]
+      "@/*": ["./src/*"]
     }
   }
 }

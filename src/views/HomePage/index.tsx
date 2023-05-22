@@ -1,34 +1,25 @@
-import useUserInfo from "@hooks/userInfo";
+import useUserInfo from "@/hooks/userInfo";
 import { FC } from "react";
-import { Header, Layout, Main } from "@/layout";
+import { Layout, LoginHeader, LogoutHeader, Main } from "@/layout";
 import { Link } from "react-router-dom";
+import { useCallback } from "react";
 import { useMemo } from "react";
 
 const HomePage: FC = () => {
   const { userInfo, dispatch } = useUserInfo();
-  const isLogin = useMemo(() => !userInfo, [userInfo]);
+  const isLogin = useMemo(() => !!userInfo, [userInfo]);
+  const logout = useCallback(dispatch, [userInfo]);
   return (
     <Layout className="h-screen overflow-hidden">
-      <Header>
-        {isLogin ? (
-          <Link
-            to="/login"
-            className="text-sm font-semibold leading-6 text-gray-900 z-50"
-          >
-            Log in <span aria-hidden="true">&rarr;</span>
-          </Link>
-        ) : (
-          <Link
-            to="/"
-            className="text-sm font-semibold leading-6 text-gray-900 z-50"
-            onClick={() => {
-              dispatch();
-            }}
-          >
-            Log out <span aria-hidden="true">&rarr;</span>
-          </Link>
-        )}
-      </Header>
+      {isLogin ? (
+        <LogoutHeader
+          onClick={() => {
+            logout();
+          }}
+        />
+      ) : (
+        <LoginHeader />
+      )}
       <Main>
         <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-40">
           <div className="text-center">
@@ -49,17 +40,17 @@ const HomePage: FC = () => {
             <div className="mt-10 flex items-center justify-center gap-x-6">
               {isLogin ? (
                 <Link
-                  to="/login"
-                  className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                >
-                  登录/注册
-                </Link>
-              ) : (
-                <Link
                   to="/workBook"
                   className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
                   开始练习
+                </Link>
+              ) : (
+                <Link
+                  to="/login"
+                  className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                >
+                  登录/注册
                 </Link>
               )}
             </div>

@@ -1,6 +1,6 @@
-import Header from "./Header";
 import Main from "./Main";
 import { FC } from "react";
+import { LoginHeader, LogoutHeader, ReturnHeader } from "./Header";
 import { ReactNode } from "react";
 
 type TProps = {
@@ -14,4 +14,4 @@ const Layout: FC<TProps> = ({ children, className }) => {
   );
 };
 // h-screen overflow-hidden
-export { Layout, Header, Main };
+export { Layout, LoginHeader, LogoutHeader, ReturnHeader, Main };
