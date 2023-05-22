@@ -10,7 +10,7 @@ const HomePage: FC = () => {
   const isLogin = useMemo(() => !!userInfo, [userInfo]);
   const logout = useCallback(dispatch, [userInfo]);
   return (
-    <Layout className="h-screen overflow-hidden">
+    <Layout className="h-screen">
       {isLogin ? (
         <LogoutHeader
           onClick={() => {
