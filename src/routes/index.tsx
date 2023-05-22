@@ -26,7 +26,7 @@ const routes: RouteObject[] = [
     element: <WorkBookPage />,
   },
   {
-    path: "/exam",
+    path: "/exam/:id",
     element: <Exam />,
   },
 ];
