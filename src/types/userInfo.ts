@@ -1,1 +1,4 @@
-export type TUserInfo = { name: string };
+export type TUserInfo = {
+  name: string;
+  token: string;
+};

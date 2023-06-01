@@ -1,12 +1,23 @@
 import QuestionList from "./QuestionList";
 import useUserInfo from "@/hooks/userInfo";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Layout, Main, ReturnHeader as Header } from "@/layout";
+import { Modal } from "antd";
 
 const WorkBookPage: FC = () => {
   const { userInfo } = useUserInfo();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   const addNewQuestionList = () => {
-    console.log(1);
+    setIsModalOpen(true);
   };
   return (
     <Layout>
@@ -41,6 +52,17 @@ const WorkBookPage: FC = () => {
             </div>
           </div>
         </div>
+        <Modal
+          title="新建题单"
+          open={isModalOpen}
+          okType="default"
+          onOk={handleOk}
+          onCancel={handleCancel}
+        >
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+        </Modal>
       </Main>
     </Layout>
   );

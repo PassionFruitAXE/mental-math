@@ -1,11 +1,32 @@
 import useUserInfo from "@/hooks/userInfo";
-import { FC } from "react";
+import { FC, useRef } from "react";
 import { Layout, Main, ReturnHeader as Header } from "@/layout";
 import { Link, useNavigate } from "react-router-dom";
+import { message } from "antd";
+import { user } from "@/api";
 
 const LoginPage: FC = () => {
   const { dispatch } = useUserInfo();
   const navigator = useNavigate();
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const loginHandleClick = async () => {
+    const username = usernameRef.current?.value;
+    const password = passwordRef.current?.value;
+    if (username && username.length && password && password.length) {
+      try {
+        const {
+          data: { token },
+        } = await user.login({ username, password });
+        dispatch({ name: "luowei", token });
+        navigator("/");
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      message.error("请填写完整信息");
+    }
+  };
   return (
     <Layout>
       <Header />
@@ -35,6 +56,7 @@ const LoginPage: FC = () => {
                 </label>
                 <div className="mt-2.5">
                   <input
+                    ref={usernameRef}
                     type="text"
                     name="username"
                     id="username"
@@ -52,6 +74,7 @@ const LoginPage: FC = () => {
                 </label>
                 <div className="mt-2.5">
                   <input
+                    ref={passwordRef}
                     type="text"
                     name="password"
                     id="password"
@@ -77,10 +100,7 @@ const LoginPage: FC = () => {
               <button
                 type="submit"
                 className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                onClick={() => {
-                  dispatch({ name: "luowei" });
-                  navigator("/");
-                }}
+                onClick={loginHandleClick}
               >
                 登录
               </button>

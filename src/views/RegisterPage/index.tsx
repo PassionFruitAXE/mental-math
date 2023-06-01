@@ -1,9 +1,48 @@
-import { FC } from "react";
+import { FC, useRef } from "react";
+import { Grade, Sex } from "@/constant/enum";
 import { Layout, Main, ReturnHeader as Header } from "@/layout";
+import { message } from "antd";
 import { useNavigate } from "react-router-dom";
+import { user } from "@/api";
 
 const RegisterPage: FC = () => {
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const realNameRef = useRef<HTMLInputElement>(null);
+  const sexRef = useRef<HTMLSelectElement>(null);
+  const gradeRef = useRef<HTMLSelectElement>(null);
   const navigator = useNavigate();
+  const registerHandleClick = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    const username = usernameRef.current?.value;
+    const password = passwordRef.current?.value;
+    const realName = realNameRef.current?.value;
+    const sex = sexRef.current?.value;
+    const grade = gradeRef.current?.value;
+    if (
+      username &&
+      username.length &&
+      password &&
+      password.length &&
+      realName &&
+      realName.length &&
+      sex &&
+      grade
+    ) {
+      await user.register({
+        username,
+        password,
+        realName,
+        sex: Number(sex),
+        grade: Number(grade),
+      });
+      navigator("/login");
+    } else {
+      message.error("请填写完整信息");
+    }
+  };
   return (
     <Layout>
       <Header />
@@ -29,6 +68,7 @@ const RegisterPage: FC = () => {
                 </label>
                 <div className="mt-2.5">
                   <input
+                    ref={realNameRef}
                     type="text"
                     name="name"
                     id="name"
@@ -39,19 +79,20 @@ const RegisterPage: FC = () => {
               </div>
               <div>
                 <label
-                  htmlFor="first-name"
+                  htmlFor="sex"
                   className="block text-sm font-semibold leading-6 text-gray-900"
                 >
                   性别
                 </label>
                 <div className="mt-2.5">
                   <select
+                    ref={sexRef}
                     id="sex"
                     name="sex"
                     className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   >
-                    <option>男</option>
-                    <option>女</option>
+                    <option value={Sex.MAN}>男</option>
+                    <option value={Sex.WOMEN}>女</option>
                   </select>
                   <svg
                     className="pointer-events-none absolute right-3 top-0 h-full w-5 text-gray-400"
@@ -70,6 +111,7 @@ const RegisterPage: FC = () => {
                 </label>
                 <div className="mt-2.5">
                   <input
+                    ref={usernameRef}
                     type="text"
                     name="username"
                     id="username"
@@ -87,6 +129,7 @@ const RegisterPage: FC = () => {
                 </label>
                 <div className="mt-2.5">
                   <input
+                    ref={passwordRef}
                     type="text"
                     name="password"
                     id="password"
@@ -104,17 +147,18 @@ const RegisterPage: FC = () => {
                 </label>
                 <div className="mt-2.5">
                   <select
+                    ref={gradeRef}
                     id="grade"
                     name="grade"
                     className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   >
-                    <option>一年级</option>
-                    <option>二年级</option>
-                    <option>三年级</option>
-                    <option>四年级</option>
-                    <option>五年级</option>
-                    <option>六年级</option>
-                    <option>&gt;六年级</option>
+                    <option value={Grade.FIRST}>一年级</option>
+                    <option value={Grade.SECOND}>二年级</option>
+                    <option value={Grade.THIRD}>三年级</option>
+                    <option value={Grade.FOURTH}>四年级</option>
+                    <option value={Grade.FIFTH}>五年级</option>
+                    <option value={Grade.SIXTH}>六年级</option>
+                    <option value={Grade.ELSE}>更高年级</option>
                   </select>
                   <svg
                     className="pointer-events-none absolute right-3 top-0 h-full w-5 text-gray-400"
@@ -141,9 +185,7 @@ const RegisterPage: FC = () => {
               <button
                 type="submit"
                 className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                onClick={() => {
-                  navigator("/login");
-                }}
+                onClick={registerHandleClick}
               >
                 注册账号
               </button>

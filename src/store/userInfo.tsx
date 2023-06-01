@@ -7,10 +7,15 @@ type TProps = {
   children?: ReactNode;
 };
 
+const defaultValue = {
+  userInfo: void 0,
+  dispatch: () => void 0,
+};
+
 const UserInfoContext = createContext<{
   userInfo: TUserInfo | undefined;
   dispatch: (newValue?: TUserInfo | undefined) => void;
-}>({ userInfo: void 0, dispatch: () => void 0 });
+}>(defaultValue);
 
 const UserInfoProvider: FC<TProps> = ({ children }) => {
   const { value: userInfo, dispatch } = useLocalStorage<TUserInfo>(
