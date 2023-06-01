@@ -1,5 +1,5 @@
+import React, { FC, useRef } from "react";
 import useUserInfo from "@/hooks/userInfo";
-import { FC, useRef } from "react";
 import { Layout, Main, ReturnHeader as Header } from "@/layout";
 import { Link, useNavigate } from "react-router-dom";
 import { message } from "antd";
@@ -10,7 +10,10 @@ const LoginPage: FC = () => {
   const navigator = useNavigate();
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-  const loginHandleClick = async () => {
+  const loginHandleClick = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
     const username = usernameRef.current?.value;
     const password = passwordRef.current?.value;
     if (username && username.length && password && password.length) {
@@ -75,7 +78,7 @@ const LoginPage: FC = () => {
                 <div className="mt-2.5">
                   <input
                     ref={passwordRef}
-                    type="text"
+                    type="password"
                     name="password"
                     id="password"
                     autoComplete="current-password"
