@@ -1,6 +1,8 @@
 import { createAxiosByInterceptors } from "@/utils/request";
 
-const request = createAxiosByInterceptors({ baseURL: "/mistake" });
+const request = createAxiosByInterceptors({
+  baseURL: `${import.meta.env.VITE_BASE_URL}/mistake`,
+});
 
 type TGetMistakeQuestionListProps = {
   pageNo: string;

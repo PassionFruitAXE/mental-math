@@ -16,7 +16,7 @@ const defineConfig: UserConfigFn = () => {
       },
     },
     server: {
-      https: true,
+      https: false,
     },
     plugins: [
       react(),

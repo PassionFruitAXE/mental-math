@@ -22,14 +22,11 @@ const RegisterPage: FC = () => {
     const sex = sexRef.current?.value;
     const grade = gradeRef.current?.value;
     if (
-      username &&
-      username.length &&
-      password &&
-      password.length &&
-      realName &&
-      realName.length &&
-      sex &&
-      grade
+      username?.length &&
+      password?.length &&
+      realName?.length &&
+      sex?.length &&
+      grade?.length
     ) {
       await user.register({
         username,
@@ -130,7 +127,7 @@ const RegisterPage: FC = () => {
                 <div className="mt-2.5">
                   <input
                     ref={passwordRef}
-                    type="text"
+                    type="password"
                     name="password"
                     id="password"
                     autoComplete="new-password"

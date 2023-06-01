@@ -1,15 +1,18 @@
 import { createAxiosByInterceptors } from "@/utils/request";
 import { Grade, Sex } from "@/constant/enum";
 import { TBaseResponse } from "@/types/axios";
+import { TUserInfo } from "@/types/userInfo";
 
-const request = createAxiosByInterceptors();
+const request = createAxiosByInterceptors({
+  baseURL: `${import.meta.env.VITE_BASE_URL}`,
+});
 
 type TLoginProps = {
   username: string;
   password: string;
 };
 
-type TLoginResponse = TBaseResponse<{ token: string }>;
+type TLoginResponse = TBaseResponse<TUserInfo>;
 
 export function login(data: TLoginProps) {
   return request.post<unknown, TLoginResponse>("/login", data);
@@ -24,5 +27,5 @@ type TRegisterProps = {
 };
 
 export function register(data: TRegisterProps) {
-  return request.post("/register", data);
+  return request.post<unknown, TBaseResponse<null>>("/register", data);
 }

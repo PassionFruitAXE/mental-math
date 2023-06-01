@@ -1,4 +1,11 @@
+import { Grade, Sex } from "@/constant/enum";
+
 export type TUserInfo = {
-  name: string;
+  user: {
+    username: string;
+    realName: string;
+    sex: Sex;
+    grade: Grade;
+  };
   token: string;
 };

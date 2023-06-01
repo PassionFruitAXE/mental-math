@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
+import { getItem, Storage } from "@/utils/storage";
 import { message } from "antd";
 
 export const createAxiosByInterceptors = (
@@ -11,6 +12,10 @@ export const createAxiosByInterceptors = (
 
   instance.interceptors.request.use(
     config => {
+      config.headers.set(
+        "token",
+        getItem<{ token: string }>(Storage.USER_INFO)?.token ?? ""
+      );
       return config;
     },
     error => {

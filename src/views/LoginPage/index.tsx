@@ -16,12 +16,12 @@ const LoginPage: FC = () => {
     e.preventDefault();
     const username = usernameRef.current?.value;
     const password = passwordRef.current?.value;
-    if (username && username.length && password && password.length) {
+    if (username?.length && password?.length) {
       try {
         const {
-          data: { token },
+          data: { user: userInfo, token },
         } = await user.login({ username, password });
-        dispatch({ name: "luowei", token });
+        dispatch({ user: userInfo, token });
         navigator("/");
       } catch (error) {
         console.error(error);

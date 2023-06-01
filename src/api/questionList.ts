@@ -1,6 +1,10 @@
 import { createAxiosByInterceptors } from "@/utils/request";
+import { QuestionListState } from "@/constant/enum";
+import { TBaseResponse } from "@/types/axios";
 
-const request = createAxiosByInterceptors({ baseURL: "/qs" });
+const request = createAxiosByInterceptors({
+  baseURL: `${import.meta.env.VITE_BASE_URL}/qs`,
+});
 
 type TCreateQuestionListProps = {
   grade: string;
@@ -8,8 +12,17 @@ type TCreateQuestionListProps = {
   name: string;
 };
 
+type TCreateQuestionListResponse = TBaseResponse<{
+  id: string;
+  name: string;
+  grade: string;
+  size: number;
+  state: number;
+  answerRecordVOList: Array<{ id: string; question: string }>;
+}>;
+
 export function createQuestionList(data: TCreateQuestionListProps) {
-  return request.post("/create", data);
+  return request.post<unknown, TCreateQuestionListResponse>("/create", data);
 }
 
 type TSubmitQuestionProps = {
@@ -29,10 +42,29 @@ export function submitQuestionList(data: TSubmitQuestionListProps) {
   return request.put("submit", data);
 }
 
+export type TQuestionList = {
+  id: number;
+  name: string;
+  grade: string;
+  size: number;
+  state: QuestionListState;
+  score: number;
+  rights: number;
+  date: string;
+};
+
 export function getHistoryQuestionList() {
-  return request.get("/list");
+  return request.get<unknown, TBaseResponse<TQuestionList[]>>("/list");
 }
 
+export type TQuestion = {
+  id: string;
+  question: string;
+  currentAnswer: string;
+  right: number;
+  answerTime: string;
+};
+
 export function getQuestionListDetails(id: string) {
-  return request.get(`/details/${id}`);
+  return request.get<unknown, TBaseResponse<TQuestion[]>>(`/details/${id}`);
 }

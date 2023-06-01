@@ -1,35 +1,25 @@
-import { FC } from "react";
-import { QuestionListState } from "@/constant/enum";
+import { FC, useEffect, useState } from "react";
+import { Grade } from "@/constant/enum";
+import { questionList } from "@/api";
+import { TQuestionList } from "@/api/questionList";
 import { useNavigate } from "react-router-dom";
 
-type TQuestionList = {
-  id: number;
-  userId: string;
-  grade: string;
-  size: number;
-  state: QuestionListState;
-  score: number;
-  rights: number;
-  title: string;
-  date: string;
-};
-
-const FinishedQuestionList: FC<{ questionList: TQuestionList }> = ({
-  questionList,
+const FinishedQuestionList: FC<{ question: TQuestionList }> = ({
+  question,
 }) => {
   const navigate = useNavigate();
 
   return (
     <article
-      key={questionList.id}
+      key={question.id}
       className="flex p-6 rounded-3xl max-w-xl flex-col items-start justify-between shadow cursor-pointer"
       onClick={() => {
-        navigate(`/exam/${questionList.id}`);
+        navigate(`/exam/${question.id}`);
       }}
     >
       <div className="flex items-center gap-x-4 text-xs">
-        <time dateTime={questionList.date} className="text-gray-500">
-          {questionList.date}
+        <time dateTime={question.date} className="text-gray-500">
+          {question.date}
         </time>
         <span className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100">
           已完成
@@ -39,20 +29,20 @@ const FinishedQuestionList: FC<{ questionList: TQuestionList }> = ({
         <h3 className="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
           <span>
             <span className="absolute inset-0" />
-            {questionList.title}
+            {question.name}
           </span>
         </h3>
         <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">
-          得分: {questionList.score}
+          得分: {question.score}
         </p>
       </div>
       <div className="relative mt-8 flex items-center gap-x-4">
         <div className="text-sm leading-6">
           <p className="font-semibold text-gray-900">
-            <span>{questionList.grade}</span>
+            <span>{Grade[question.grade as unknown as number]}</span>
           </p>
           <p className="text-gray-600">
-            正确率 {questionList.rights} / {questionList.size}
+            正确率 {question.rights} / {question.size}
           </p>
         </div>
       </div>
@@ -60,22 +50,22 @@ const FinishedQuestionList: FC<{ questionList: TQuestionList }> = ({
   );
 };
 
-const UnderwayQuestionList: FC<{ questionList: TQuestionList }> = ({
-  questionList,
+const UnderwayQuestionList: FC<{ question: TQuestionList }> = ({
+  question,
 }) => {
   const navigate = useNavigate();
 
   return (
     <article
-      key={questionList.id}
+      key={question.id}
       className="flex p-6 rounded-3xl max-w-xl flex-col items-start justify-between shadow cursor-pointer"
       onClick={() => {
-        navigate(`/exam/${questionList.id}`);
+        navigate(`/exam/${question.id}`);
       }}
     >
       <div className="flex items-center gap-x-4 text-xs">
-        <time dateTime={questionList.date} className="text-gray-500">
-          {questionList.date}
+        <time dateTime={question.date} className="text-gray-500">
+          {question.date}
         </time>
         <span className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100">
           进行中
@@ -85,7 +75,7 @@ const UnderwayQuestionList: FC<{ questionList: TQuestionList }> = ({
         <h3 className="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
           <span>
             <span className="absolute inset-0" />
-            {questionList.title}
+            {question.name}
           </span>
         </h3>
         <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">
@@ -95,11 +85,9 @@ const UnderwayQuestionList: FC<{ questionList: TQuestionList }> = ({
       <div className="relative mt-8 flex items-center gap-x-4">
         <div className="text-sm leading-6">
           <p className="font-semibold text-gray-900">
-            <span>{questionList.grade}</span>
+            <span>{Grade[question.grade as unknown as number]}</span>
           </p>
-          <p className="text-gray-600">
-            正确率 [完成后查看] / {questionList.size}
-          </p>
+          <p className="text-gray-600">正确率 [完成后查看] / {question.size}</p>
         </div>
       </div>
     </article>
@@ -107,32 +95,20 @@ const UnderwayQuestionList: FC<{ questionList: TQuestionList }> = ({
 };
 
 const QuestionList: FC = () => {
-  const questionLists: TQuestionList[] = [
-    {
-      id: 1,
-      userId: "luowei",
-      grade: "题目难度 中等",
-      size: 20,
-      state: QuestionListState.FINISHED,
-      score: 50,
-      rights: 10,
-      title: "我是小学生114514",
-      date: "Mar 16, 2020",
-    },
-  ];
+  const [questions, setQuestions] = useState<TQuestionList[]>([]);
+  useEffect(() => {
+    (async () => {
+      const { data } = await questionList.getHistoryQuestionList();
+      setQuestions(data);
+    })();
+  }, []);
   return (
     <>
-      {questionLists.map(questionList =>
-        !questionList.state ? (
-          <UnderwayQuestionList
-            key={questionList.id}
-            questionList={questionList}
-          />
+      {questions.map(question =>
+        !question.state ? (
+          <UnderwayQuestionList key={question.id} question={question} />
         ) : (
-          <FinishedQuestionList
-            key={questionList.id}
-            questionList={questionList}
-          />
+          <FinishedQuestionList key={question.id} question={question} />
         )
       )}
     </>
