@@ -34,12 +34,8 @@ export function submitQuestion(data: TSubmitQuestionProps) {
   return request.post("submit", data);
 }
 
-type TSubmitQuestionListProps = {
-  id: string;
-};
-
-export function submitQuestionList(data: TSubmitQuestionListProps) {
-  return request.put("submit", data);
+export function submitQuestionList(id: string) {
+  return request.put(`submit/${id}`);
 }
 
 export type TQuestionList = {
@@ -66,5 +62,8 @@ export type TQuestion = {
 };
 
 export function getQuestionListDetails(id: string) {
-  return request.get<unknown, TBaseResponse<TQuestion[]>>(`/details/${id}`);
+  return request.get<
+    unknown,
+    TBaseResponse<{ answerRecordVOList: TQuestion[] }>
+  >(`/detail/${id}`);
 }

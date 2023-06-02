@@ -85,7 +85,7 @@ const UnderwayQuestionList: FC<{ question: TQuestionList }> = ({
       <div className="relative mt-8 flex items-center gap-x-4">
         <div className="text-sm leading-6">
           <p className="font-semibold text-gray-900">
-            <span>{Grade[question.grade as unknown as number]}</span>
+            <span>{question.grade}</span>
           </p>
           <p className="text-gray-600">正确率 [完成后查看] / {question.size}</p>
         </div>

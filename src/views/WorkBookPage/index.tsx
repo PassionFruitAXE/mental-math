@@ -1,7 +1,6 @@
 import QuestionList from "./QuestionList";
 import useUserInfo from "@/hooks/userInfo";
 import { FC, useRef, useState } from "react";
-import { Grade } from "@/constant/enum";
 import { Layout, Main, ReturnHeader as Header } from "@/layout";
 import { message, Modal } from "antd";
 import { questionList } from "@/api";
@@ -136,13 +135,10 @@ const WorkBookPage: FC = () => {
                     name="grade"
                     className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   >
-                    <option value={Grade.FIRST}>一年级</option>
-                    <option value={Grade.SECOND}>二年级</option>
-                    <option value={Grade.THIRD}>三年级</option>
-                    <option value={Grade.FOURTH}>四年级</option>
-                    <option value={Grade.FIFTH}>五年级</option>
-                    <option value={Grade.SIXTH}>六年级</option>
-                    <option value={Grade.ELSE}>更高年级</option>
+                    <option value={"A"}>A</option>
+                    <option value={"B"}>B</option>
+                    <option value={"C"}>C</option>
+                    <option value={"D"}>D</option>
                   </select>
                   <svg
                     className="pointer-events-none absolute right-3 top-0 h-full w-5 text-gray-400"
