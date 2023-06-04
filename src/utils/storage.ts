@@ -3,15 +3,15 @@ export enum Storage {
 }
 
 export function getItem<T = unknown>(key: string): T | undefined {
-  const value = localStorage.getItem(key);
+  const value = sessionStorage.getItem(key);
   return value ? JSON.parse(value) : void 0;
 }
 
 export function setItem(key: string, value: unknown) {
   if (value !== undefined && value !== null) {
     const valueString = JSON.stringify(value);
-    localStorage.setItem(key, valueString);
+    sessionStorage.setItem(key, valueString);
   } else {
-    localStorage.removeItem(key);
+    sessionStorage.removeItem(key);
   }
 }

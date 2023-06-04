@@ -3,14 +3,20 @@ import useUserInfo from "@/hooks/userInfo";
 import { FC, useRef, useState } from "react";
 import { Layout, Main, ReturnHeader as Header } from "@/layout";
 import { message, Modal } from "antd";
-import { questionList } from "@/api";
+import { mistake, questionList } from "@/api";
 import { useNavigate } from "react-router-dom";
+
+enum Type {
+  NORMAL = "normal",
+  MISTAKE = "MISTAKE",
+}
 
 const WorkBookPage: FC = () => {
   const { userInfo } = useUserInfo();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const nameRef = useRef<HTMLInputElement>(null);
+  const typeRef = useRef<HTMLSelectElement>(null);
   const numRef = useRef<HTMLInputElement>(null);
   const gradeRef = useRef<HTMLSelectElement>(null);
 
@@ -21,14 +27,24 @@ const WorkBookPage: FC = () => {
     const grade = gradeRef.current?.value;
     if (name?.length && num?.length && grade?.length) {
       try {
-        const {
-          data: { id },
-        } = await questionList.createQuestionList({
-          name,
-          num: Number(num),
-          grade,
-        });
-        navigate(`/exam/${id}`);
+        if (typeRef.current?.value === Type.NORMAL) {
+          const {
+            data: { id },
+          } = await questionList.createQuestionList({
+            name,
+            num: Number(num),
+            grade,
+          });
+          navigate(`/exam/${id}`);
+        } else if (typeRef.current?.value === Type.MISTAKE) {
+          const {
+            data: { id },
+          } = await mistake.getMistakeQuestionList({
+            name,
+            num: Number(num),
+          });
+          navigate(`/exam/${id}`);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -86,7 +102,7 @@ const WorkBookPage: FC = () => {
         >
           <form className="mx-auto max-w-xl">
             <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
-              <div className="sm:col-span-2">
+              <div>
                 <label
                   htmlFor="username"
                   className="block text-sm font-semibold leading-6 text-gray-900"
@@ -101,6 +117,25 @@ const WorkBookPage: FC = () => {
                     id="name"
                     className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
+                </div>
+              </div>
+              <div>
+                <label
+                  htmlFor="type"
+                  className="block text-sm font-semibold leading-6 text-gray-900"
+                >
+                  题单类型
+                </label>
+                <div className="mt-2.5">
+                  <select
+                    ref={typeRef}
+                    id="type"
+                    name="type"
+                    className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  >
+                    <option value={Type.NORMAL}>题单</option>
+                    <option value={Type.MISTAKE}>错题单</option>
+                  </select>
                 </div>
               </div>
               <div>
@@ -126,7 +161,7 @@ const WorkBookPage: FC = () => {
                   htmlFor="grade"
                   className="block text-sm font-semibold leading-6 text-gray-900"
                 >
-                  年级
+                  难度
                 </label>
                 <div className="mt-2.5">
                   <select
